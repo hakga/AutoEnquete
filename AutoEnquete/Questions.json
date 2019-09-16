@@ -79,58 +79,58 @@
                 "code": "A2_3_2",
                 "kind": "option",
                 "text": "設問2"
-              }
-            ]
-          },
-          {
-            "code": "Q2_3",
-            "kind": "block",
-            "text": "設問1",
-            "items": [
-              {
-                "code": "Q2_3_1",
-                "kind": "radio",
-                "text": "半径をrとした時の円の面積は？",
-                "items": [
-                  {
-                    "code": "A2_3_1_1",
-                    "kind": "option",
-                    "text": "2πr"
-                  },
-                  {
-                    "code": "A2_3_1_2",
-                    "kind": "option",
-                    "text": "πr^2"
-                  },
-                  {
-                    "code": "A2_3_1_3",
-                    "kind": "option",
-                    "text": "3/4・πr^3"
-                  }
-                ]
               },
               {
-                "code": "Q2_3_2",
-                "kind": "radio",
-                "text": "直角三角形の斜辺をc、それ以外をa,bとしたき。a^2+b^2=c^2",
+                "code": "Q2_3",
+                "kind": "block",
+                "text": "設問1",
                 "items": [
                   {
-                    "code": "A2_3_2_1",
-                    "kind": "option",
-                    "text": "三方一両損"
+                    "code": "Q2_3_1",
+                    "kind": "radio",
+                    "text": "半径をrとした時の円の面積は？",
+                    "items": [
+                      {
+                        "code": "A2_3_1_1",
+                        "kind": "option",
+                        "text": "2πr"
+                      },
+                      {
+                        "code": "A2_3_1_2",
+                        "kind": "option",
+                        "text": "πr^2"
+                      },
+                      {
+                        "code": "A2_3_1_3",
+                        "kind": "option",
+                        "text": "3/4・πr^3"
+                      }
+                    ]
                   },
                   {
-                    "code": "A2_3_2_2",
-                    "kind": "option",
-                    "text": "三平方の定理"
-                  },
-                  {
-                    "code": "A2_3_2_3",
-                    "kind": "option",
-                    "text": "ピタゴラスの定理"
+                    "code": "Q2_3_2",
+                    "kind": "radio",
+                    "text": "直角三角形の斜辺をc、それ以外をa,bとしたき。a^2+b^2=c^2",
+                    "items": [
+                      {
+                        "code": "A2_3_2_1",
+                        "kind": "option",
+                        "text": "三方一両損"
+                      },
+                      {
+                        "code": "A2_3_2_2",
+                        "kind": "option",
+                        "text": "三平方の定理"
+                      },
+                      {
+                        "code": "A2_3_2_3",
+                        "kind": "option",
+                        "text": "ピタゴラスの定理"
+                      }
+                    ],
+                    "depend": [ { "Q2_2": [ "A2_2_1" ] } ]
                   }
-                ],
-                "depend": [ { "Q2_2": [ "A2_2_1" ] } ]
+                ]
               },
               {
                 "code": "Q2_4",

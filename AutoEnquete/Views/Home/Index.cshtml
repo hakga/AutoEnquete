@@ -32,8 +32,11 @@
 <script type="text/template" id="radio">
     <section class="p-2">
         <p data-bind="text: text"></p>
-        <!-- ko foreach: items -->
+        <!-- ko foreach: items.filter( function( i) {return i.kind == 'option'}) -->
         <div data-bind="template: kind" class="custom-control custom-radio custom-control-inline"></div>
+        <!-- /ko -->
+        <!-- ko foreach: items.filter( function( i) {return i.kind != 'option'}) -->
+        <div data-bind="template: kind"></div>
         <!-- /ko -->
     </section>
 </script>
@@ -66,10 +69,43 @@
             var self = this;
             this.questions = ko.observableArray([]);
         };
+        function setupQuestions(nodes, parent) {
+            return nodes.map(function (v) {
+                switch (v.kind) {
+                    case "tab":
+                        v.data = ko.observable();
+                        v.items = setupQuestions(v.items, v);
+                        break;
+                    case "pane":
+                        break;
+                    case "radio":
+                        v.data = ko.observable();
+                        v.items = setupQuestions(v.items, v);
+                        break;
+                    case "option":
+                        v.checked = parent.data;
+                        break;
+                    case "text":
+                        v.data = ko.observable();
+                        break;
+                    case "block":
+                        if (v.depend) {
+                            for (var k in Object.keys(v.depend)) {
+                                v.values = v.depend[k];
+                                break;  // 暫定の仕様
+                            }
+                        }
+                        v.data = parent.data;
+                        break;
+                }
+                return v;
+            })
+
+        }
         document.addEventListener("DOMContentLoaded", function () {
             var model = new ViewModel();
             $.getJSON('@Url.Content("~/Questions.json")').done(function (data) {
-                model.questions(data);
+                model.questions(setupQuestions(data, null));
             }).fail(function (errs) {
                 console.log(errs);
             });
