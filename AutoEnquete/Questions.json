@@ -1,0 +1,177 @@
+﻿[
+  {
+    "code": "T0",
+    "kind": "tab",
+    "items": [
+      {
+        "code": "P1",
+        "kind": "pane",
+        "text": "英語",
+        "items": [
+          {
+            "code": "Q1_1",
+            "kind": "radio",
+            "text": "boy の対義語は？",
+            "items": [
+              {
+                "code": "A1_1_1",
+                "kind": "option",
+                "text": "toy"
+              },
+              {
+                "code": "A1_1_2",
+                "kind": "option",
+                "text": "girl"
+              },
+              {
+                "code": "A1_1_3",
+                "kind": "option",
+                "text": "yob"
+              }
+            ]
+          },
+          {
+            "code": "Q1_2",
+            "kind": "radio",
+            "text": "big の対義語は？",
+            "items": [
+              {
+                "code": "A1_2_1",
+                "kind": "option",
+                "text": "pig"
+              },
+              {
+                "code": "A1_2_2",
+                "kind": "option",
+                "text": "little"
+              },
+              {
+                "code": "A1_3_3",
+                "kind": "option",
+                "text": "gib"
+              }
+            ]
+          },
+          {
+            "code": "Q1_3",
+            "kind": "radio",
+            "text": "Do you love me?",
+            "items": []
+          }
+        ]
+      },
+      {
+        "code": "P2",
+        "kind": "pane",
+        "text": "数学",
+        "items": [
+          {
+            "code": "Q2_2",
+            "kind": "radio",
+            "text": "設問1,設問2を選んでください",
+            "items": [
+              {
+                "code": "A2_2_1",
+                "kind": "option",
+                "text": "設問1"
+              },
+              {
+                "code": "A2_3_2",
+                "kind": "option",
+                "text": "設問2"
+              }
+            ]
+          },
+          {
+            "code": "Q2_3",
+            "kind": "block",
+            "text": "設問1",
+            "items": [
+              {
+                "code": "Q2_3_1",
+                "kind": "radio",
+                "text": "半径をrとした時の円の面積は？",
+                "items": [
+                  {
+                    "code": "A2_3_1_1",
+                    "kind": "option",
+                    "text": "2πr"
+                  },
+                  {
+                    "code": "A2_3_1_2",
+                    "kind": "option",
+                    "text": "πr^2"
+                  },
+                  {
+                    "code": "A2_3_1_3",
+                    "kind": "option",
+                    "text": "3/4・πr^3"
+                  }
+                ]
+              },
+              {
+                "code": "Q2_3_2",
+                "kind": "radio",
+                "text": "直角三角形の斜辺をc、それ以外をa,bとしたき。a^2+b^2=c^2",
+                "items": [
+                  {
+                    "code": "A2_3_2_1",
+                    "kind": "option",
+                    "text": "三方一両損"
+                  },
+                  {
+                    "code": "A2_3_2_2",
+                    "kind": "option",
+                    "text": "三平方の定理"
+                  },
+                  {
+                    "code": "A2_3_2_3",
+                    "kind": "option",
+                    "text": "ピタゴラスの定理"
+                  }
+                ],
+                "depend": [ { "Q2_2": [ "A2_2_1" ] } ]
+              },
+              {
+                "code": "Q2_4",
+                "kind": "block",
+                "text": "設問2",
+                "items": [
+                  {
+                    "code": "Q2_4_1",
+                    "kind": "text",
+                    "text": "3x + 150 = 330"
+                  },
+                  {
+                    "code": "Q2_4_2",
+                    "kind": "text",
+                    "text": "2x^2 + 1500 = 3100"
+                  },
+                  {
+                    "code": "Q2_4_3",
+                    "kind": "text",
+                    "text": "sinθ=1/2 を、0≦θ<2π の範囲で"
+                  }
+                ],
+                "depend": [ { "Q2_2": [ "A2_2_2" ] } ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "code": "P3",
+        "kind": "pane",
+        "text": "国語",
+        "items": [
+          {
+            "code": "Q3_1",
+            "kind": "text",
+            "text": "寿限無の正式名",
+            "rows": "5"
+          }
+        ]
+      }
+    ]
+  }
+]
