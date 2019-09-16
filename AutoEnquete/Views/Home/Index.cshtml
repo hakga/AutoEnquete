@@ -3,9 +3,9 @@
 }
 
 <div class="jumbotron">
-    <h1>ASP.NET</h1>
+    <h1>汎用アンケート</h1>
 </div>
-<div id="Questions">
+<div id="Questions" class="p-3">
     <ul data-bind="foreach: questions">
         <li data-bind="template: kind"></li>
     </ul>
@@ -16,7 +16,7 @@
     <ul data-bind="foreach:items" class="nav nav-tabs">
         <li class="nav-item"><a class="nav-link" data-toggle="tab" data-bind="text: text, attr:{href:'#'+code}"></a></li>
     </ul>
-    <div data-bind="foreach:items" class="tab-content">
+    <div data-bind="foreach:items" class="tab-content border-left border-right border-bottom">
         <div data-bind="attr:{id: code}" class="tab-pane">
             <div data-bind="template: kind"></div>
         </div>
@@ -30,23 +30,35 @@
     </div>
 </script>
 <script type="text/template" id="radio">
-    <!-- ko foreach: items -->
-    <div data-bind="template: kind"></div>
-    <!-- /ko -->
+    <section class="p-2">
+        <p data-bind="text: text"></p>
+        <!-- ko foreach: items -->
+        <div data-bind="template: kind" class="custom-control custom-radio custom-control-inline"></div>
+        <!-- /ko -->
+    </section>
 </script>
 <script type="text/template" id="text">
-    <p data-bind="text: text"></p>
+    <section class="p-2">
+        <p data-bind="text: text"></p>
+        <input type="text" data-bind="attr:{name:code}">
+    </section>
 </script>
 <script type="text/template" id="block">
-    <p data-bind="text: text"></p>
+    <section data-bind="if:true" class="p-2">
+        <p data-bind="text: text"></p>
+        <!-- ko foreach: items -->
+        <div data-bind="template: kind"></div>
+        <!-- /ko -->
+    </section>
 </script>
 <script type="text/template" id="option">
-    <p data-bind="text: text"></p>
+        <input type="radio" data-bind="attr:{id: code, name: $parent.code, value: code}" class="custom-control-input">
+        <label data-bind="text: text, attr: {for: code}" class="custom-control-label"></label>
 </script>
 @Scripts.Render("~/bundles/knockout")
 @section scripts{
     <script type="text/javascript">
-        var Options = {
+        var StandardOptions = {
             YesNo: [{ code: "A_yes", kind: "option", text: "はい" }, { code: "A_no", kind: "option", text: "いいえ" }],
             Numeric3: [{ code: "1", kind: "option", text: "1" }, { code: "2", kind: "option", text: "2" }, { code: "3", kind: "option", text: "3" }]
         };
