@@ -76,13 +76,14 @@
                 "text": "設問1"
               },
               {
-                "code": "A2_3_2",
+                "code": "A2_2_2",
                 "kind": "option",
                 "text": "設問2"
               },
               {
                 "code": "Q2_3",
                 "kind": "block",
+                "test": "Test",
                 "text": "設問1",
                 "items": [
                   {
@@ -127,10 +128,10 @@
                         "kind": "option",
                         "text": "ピタゴラスの定理"
                       }
-                    ],
-                    "depend": [ { "Q2_2": [ "A2_2_1" ] } ]
+                    ]
                   }
-                ]
+                ],
+                "depend": [ { "Q2_2": [ "A2_2_1" ] } ]
               },
               {
                 "code": "Q2_4",

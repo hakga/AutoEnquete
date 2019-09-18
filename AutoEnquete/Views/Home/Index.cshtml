@@ -47,15 +47,15 @@
     </section>
 </script>
 <script type="text/template" id="block">
-    <section data-bind="if:true" class="p-2">
-        <p data-bind="text: text"></p>
+    <section data-bind="visible:data()==values" class="p-2">
+        <p data-bind="text: text"></p><p data-bind="text: values"></p>
         <!-- ko foreach: items -->
         <div data-bind="template: kind"></div>
         <!-- /ko -->
     </section>
 </script>
 <script type="text/template" id="option">
-        <input type="radio" data-bind="attr:{id: code, name: $parent.code, value: code}" class="custom-control-input">
+        <input type="radio" data-bind="checked: $parent.data, attr:{id: code, name: $parent.code, value: code}" class="custom-control-input">
         <label data-bind="text: text, attr: {for: code}" class="custom-control-label"></label>
 </script>
 @Scripts.Render("~/bundles/knockout")
@@ -71,35 +71,40 @@
         };
         function setupQuestions(nodes, parent) {
             return nodes.map(function (v) {
+                var node = {};
+                node.code = v.code;
+                node.kind = v.kind;
+                node.text = v.text;
+                node.items = [];
                 switch (v.kind) {
                     case "tab":
-                        v.data = ko.observable();
-                        v.items = setupQuestions(v.items, v);
+                        node.data = "ABC";//ko.observable();
+                        node.items = setupQuestions(v.items, node);
                         break;
                     case "pane":
+                        node.items = setupQuestions(v.items, node);
                         break;
                     case "radio":
-                        v.data = ko.observable();
-                        v.items = setupQuestions(v.items, v);
+                        node.data = ko.observable();
+                        node.items = setupQuestions(v.items, node);
                         break;
                     case "option":
-                        v.checked = parent.data;
+                        node.checked = parent.data;
                         break;
                     case "text":
-                        v.data = ko.observable();
+                        node.data = ko.observable();
                         break;
                     case "block":
+                        node.items = setupQuestions(v.items, node);
                         if (v.depend) {
-                            for (var k in Object.keys(v.depend)) {
-                                v.values = v.depend[k];
-                                break;  // 暫定の仕様
-                            }
+                            var h = Object.keys(v.depend[0]);
+                            node.values = v.depend[0][h[0]];
                         }
-                        v.data = parent.data;
+                        node.data = parent.data;
                         break;
                 }
-                return v;
-            })
+                return node;
+            });
 
         }
         document.addEventListener("DOMContentLoaded", function () {
