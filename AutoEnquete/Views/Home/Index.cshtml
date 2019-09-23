@@ -43,12 +43,12 @@
 <script type="text/template" id="text">
     <section class="p-2">
         <p data-bind="text: text"></p>
-        <input type="text" data-bind="attr:{name:code}">
+        <input type="text" data-bind="value: data, attr:{name:code}">
     </section>
 </script>
 <script type="text/template" id="block">
-    <section data-bind="visible:data()==values" class="p-2">
-        <p data-bind="text: text"></p><p data-bind="text: values"></p>
+    <section data-bind="visible:values.includes(data())" class="p-2">
+        <p data-bind="text: text"></p>
         <!-- ko foreach: items -->
         <div data-bind="template: kind"></div>
         <!-- /ko -->
@@ -69,24 +69,24 @@
             var self = this;
             this.questions = ko.observableArray([]);
         };
-        function setupQuestions(nodes, parent) {
+        function makeNodes(nodes, parent) {
             return nodes.map(function (v) {
                 var node = {};
                 node.code = v.code;
                 node.kind = v.kind;
                 node.text = v.text;
                 node.items = [];
+                node.depend = v.depend;
                 switch (v.kind) {
                     case "tab":
-                        node.data = "ABC";//ko.observable();
-                        node.items = setupQuestions(v.items, node);
+                        node.items = makeNodes(v.items, node);
                         break;
                     case "pane":
-                        node.items = setupQuestions(v.items, node);
+                        node.items = makeNodes(v.items, node);
                         break;
                     case "radio":
                         node.data = ko.observable();
-                        node.items = setupQuestions(v.items, node);
+                        node.items = makeNodes(v.items, node);
                         break;
                     case "option":
                         node.checked = parent.data;
@@ -95,22 +95,47 @@
                         node.data = ko.observable();
                         break;
                     case "block":
-                        node.items = setupQuestions(v.items, node);
-                        if (v.depend) {
-                            var h = Object.keys(v.depend[0]);
-                            node.values = v.depend[0][h[0]];
-                        }
-                        node.data = parent.data;
+                        node.values = [];
+                        node.items = makeNodes(v.items, node);
                         break;
                 }
                 return node;
             });
 
         }
+        function remakeNodes(nodes, rootNnodes) {
+            nodes.forEach(function (v, i) {
+                if (v.depend) {
+                    var c = Object.keys(v.depend);
+                    if (c[0]) {
+                        var node = findNode(rootNnodes, c[0]);
+                        if (node != null) {
+                            v.values = v.depend[c[0]];
+                            v.data = node.data;
+                        } else console.log("depend参照不良");
+                    } else console.log("depend参照不正");
+                }
+                remakeNodes(v.items, rootNnodes);
+            });
+        }
+        function findNode(nodes, code) {
+            var node = null;
+            for ( var v in nodes) {
+                if (nodes[v].code == code) {
+                    node = nodes[v];
+                    break;
+                }
+                node = findNode(nodes[v].items, code);
+                if ( node != null) break;
+            }
+            return node;
+        }
         document.addEventListener("DOMContentLoaded", function () {
             var model = new ViewModel();
             $.getJSON('@Url.Content("~/Questions.json")').done(function (data) {
-                model.questions(setupQuestions(data, null));
+                var rootNodes = makeNodes(data, null);
+                remakeNodes(rootNodes, rootNodes);
+                model.questions(rootNodes);
             }).fail(function (errs) {
                 console.log(errs);
             });
