@@ -40,10 +40,22 @@
         <!-- /ko -->
     </section>
 </script>
+<script type="text/template" id="select">
+    <section class="p-2">
+        <p data-bind="text: text"></p>
+        <select data-bind="value: data, options:options, optionsText:'text', optionsValue:'code', attr:{name:code, size:rows}" class="custom-control custom-select"></select>
+    </section>
+</script>
 <script type="text/template" id="text">
     <section class="p-2">
         <p data-bind="text: text"></p>
-        <input type="text" data-bind="value: data, attr:{name:code}">
+        <input type="text" data-bind="value: data, attr:{name:code, size:cols}">
+    </section>
+</script>
+<script type="text/template" id="textarea">
+    <section class="p-2">
+        <p data-bind="text: text"></p>
+        <textarea data-bind="value: data, attr:{name:code, rows:rows, cols:cols}"></textarea>
     </section>
 </script>
 <script type="text/template" id="block">
@@ -57,6 +69,8 @@
 <script type="text/template" id="option">
         <input type="radio" data-bind="checked: $parent.data, attr:{id: code, name: $parent.code, value: code}" class="custom-control-input">
         <label data-bind="text: text, attr: {for: code}" class="custom-control-label"></label>
+</script>
+<script type="text/template" id="invisible">
 </script>
 @Scripts.Render("~/bundles/knockout")
 @section scripts{
@@ -91,8 +105,23 @@
                     case "option":
                         node.checked = parent.data;
                         break;
+                    case "select":
+                        node.data = ko.observable();
+                        node.options = v.items.map(function (v) {
+                            var option = {};
+                            option.text = v.text;
+                            option.code = v.code;
+                            node.rows = v.rows || null;
+                            return option;
+                        });
+                        break;
                     case "text":
                         node.data = ko.observable();
+                        node.cols = v.cols || 20;
+                        if (v.rows) {
+                            node.kind = "textarea";
+                            node.rows = v.rows;
+                        }
                         break;
                     case "block":
                         node.values = [];
@@ -120,12 +149,12 @@
         }
         function findNode(nodes, code) {
             var node = null;
-            for ( var v in nodes) {
-                if (nodes[v].code == code) {
-                    node = nodes[v];
+            for ( var i in nodes) {
+                if (nodes[i].code == code) {
+                    node = nodes[i];
                     break;
                 }
-                node = findNode(nodes[v].items, code);
+                node = findNode(nodes[i].items, code);
                 if ( node != null) break;
             }
             return node;
