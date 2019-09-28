@@ -56,7 +56,7 @@
             "code": "Q1_3",
             "kind": "radio",
             "text": "Do you love me?",
-            "items": []
+            "items": { "StandardOptions": "YesNo" }
           }
         ]
       },

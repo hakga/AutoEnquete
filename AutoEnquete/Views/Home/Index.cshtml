@@ -74,8 +74,8 @@
 @section scripts{
     <script type="text/javascript">
         var StandardOptions = {
-            YesNo: [{ code: "A_yes", kind: "option", text: "はい" }, { code: "A_no", kind: "option", text: "いいえ" }],
-            Numeric3: [{ code: "1", kind: "option", text: "1" }, { code: "2", kind: "option", text: "2" }, { code: "3", kind: "option", text: "3" }]
+            "YesNo": [{ code: "A_yes", kind: "option", text: "はい" }, { code: "A_no", kind: "option", text: "いいえ" }],
+            "Numeric3": [{ code: "1", kind: "option", text: "1" }, { code: "2", kind: "option", text: "2" }, { code: "3", kind: "option", text: "3" }]
         };
         var ViewModel = function () {
             var self = this;
@@ -98,14 +98,24 @@
                         break;
                     case "radio":
                         node.data = ko.observable();
-                        node.items = makeNodes(v.items, node);
+                        if (v.items.StandardOptions) {
+                            node.items = makeNodes(StandardOptions[v.items.StandardOptions], node);
+                        } else {
+                            node.items = makeNodes(v.items, node);
+                        }
                         break;
                     case "option":
                         node.checked = parent.data;
                         break;
                     case "select":
                         node.data = ko.observable();
-                        node.options = v.items.filter( function( i) {return i.kind == 'option'}).map( function ( i) {
+                        var items = [];
+                        if (v.items.StandardOptions) {
+                            items = StandardOptions[v.items.StandardOptions];
+                        } else {
+                            items = v.items.filter(function (i) { return i.kind == 'option' });
+                        }
+                        node.options = items.map(function (i) {
                             var option = {};
                             option.text = i.text;
                             option.code = i.code;
