@@ -5,13 +5,11 @@
 <div class="jumbotron">
     <h1>汎用アンケート</h1>
 </div>
-<div id="Questions" class="p-3">
-    <ul data-bind="foreach: questions">
-        <li data-bind="template: kind"></li>
-    </ul>
-</div>
-<div class="row">
-</div>
+<form id="Questions" class="p-3">
+    <div data-bind="foreach: questions">
+        <div data-bind="template: kind" class="form-group"></div>
+    </div>
+</form>
 <script type="text/template" id="tab">
     <ul data-bind="foreach:items" class="nav nav-tabs">
         <li class="nav-item"><a class="nav-link" data-toggle="tab" data-bind="text: text, attr:{href:'#'+code}"></a></li>
@@ -31,7 +29,7 @@
 </script>
 <script type="text/template" id="radio">
     <section class="p-2">
-        <p data-bind="text: text"></p>
+        <p data-bind="text: text" class="font-weight-bold mb-0 mb-sm-1"></p>
         <!-- ko foreach: items.filter( function( i) {return i.kind == 'option'}) -->
         <div data-bind="template: kind" class="custom-control custom-radio custom-control-inline"></div>
         <!-- /ko -->
@@ -42,25 +40,25 @@
 </script>
 <script type="text/template" id="select">
     <section class="p-2">
-        <p data-bind="text: text"></p>
-        <select data-bind="value: data, options:options, optionsText:'text', optionsValue:'code', attr:{name:code, size:rows}" class="custom-control custom-select"></select>
+        <p data-bind="text: text"class="font-weight-bold"></p>
+        <select data-bind="value: data, options:options, optionsText:'text', optionsValue:'code', attr:{name:code, size:rows}" class="custom-control custom-select ml-sm-2 ml-md-3"></select>
     </section>
 </script>
 <script type="text/template" id="text">
     <section class="p-2">
-        <p data-bind="text: text"></p>
-        <input type="text" data-bind="value: data, attr:{name:code, size:cols}">
+        <p data-bind="text: text" class="font-weight-bold mb-0"></p>
+        <input type="text" data-bind="value: data, attr:{name:code, size:cols}" class="form-control">
     </section>
 </script>
 <script type="text/template" id="textarea">
-    <section class="p-2">
-        <p data-bind="text: text"></p>
-        <textarea data-bind="value: data, attr:{name:code, rows:rows, cols:cols}"></textarea>
+    <section class="form-group row p-3">
+        <label  data-bind="text: text" class="font-weight-bold col-md-3 col-lg-2"></label>
+        <textarea data-bind="value: data, attr:{name:code, rows:rows, cols:cols}" class="form-control col-12 col-sm-11 col-md-8 mx-auto"></textarea>
     </section>
 </script>
 <script type="text/template" id="block">
-    <section data-bind="visible:values.includes(data())" class="p-2">
-        <p data-bind="text: text"></p>
+    <section data-bind="visible:values.includes(data())" class="p-2 mt-2 border">
+        <p data-bind="text: text" class="mb-1"></p>
         <!-- ko foreach: items -->
         <div data-bind="template: kind"></div>
         <!-- /ko -->
@@ -107,11 +105,11 @@
                         break;
                     case "select":
                         node.data = ko.observable();
-                        node.options = v.items.map(function (v) {
+                        node.options = v.items.filter( function( i) {return i.kind == 'option'}).map( function ( i) {
                             var option = {};
-                            option.text = v.text;
-                            option.code = v.code;
-                            node.rows = v.rows || null;
+                            option.text = i.text;
+                            option.code = i.code;
+                            node.rows = i.rows || null;
                             return option;
                         });
                         break;
