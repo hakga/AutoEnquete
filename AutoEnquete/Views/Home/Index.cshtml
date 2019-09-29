@@ -100,7 +100,8 @@
             var self = this;
             this.questions = ko.observableArray([]);
             this.saveAnswers = function (data, e) {
-                var d = data;
+                var d = selectMany(data.questions());
+                console.log(d);
             };
         };
         function makeNodes(nodes, parent) {
@@ -188,6 +189,14 @@
                 if ( node != null) break;
             }
             return node;
+        }
+        function selectMany(nodes) {
+            var lists = [];
+            ko.utils.arrayForEach(nodes, function (i) {
+                if (i.data) lists.push({ code: i.code, data: i.data() });
+                ko.utils.arrayPushAll(lists, selectMany(i.items));
+            });
+            return lists;
         }
         document.addEventListener("DOMContentLoaded", function () {
             var model = new ViewModel();
