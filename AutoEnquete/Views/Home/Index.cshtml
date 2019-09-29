@@ -100,8 +100,9 @@
             var self = this;
             this.questions = ko.observableArray([]);
             this.saveAnswers = function (data, e) {
-                var d = selectMany(data.questions());
-                console.log(d);
+                var saveData = selectMany(data.questions());
+                localStorage.setItem('AutoEnquete', JSON.stringify(saveData));
+                $('#saveModal').modal('toggle');
             };
         };
         function makeNodes(nodes, parent) {
@@ -204,6 +205,15 @@
                 var rootNodes = makeNodes(data, null);
                 remakeNodes(rootNodes, rootNodes);
                 model.questions(rootNodes);
+                var Answers = localStorage.getItem('AutoEnquete');
+                if (Answers) {
+                    ko.utils.arrayForEach(JSON.parse(Answers), function (i) {
+                       if (i.data) {
+                           var node = findNode(rootNodes, i.code);
+                           if (node) node.data(i.data);
+                       }
+                    });
+                }
             }).fail(function (errs) {
                 console.log(errs);
             });
