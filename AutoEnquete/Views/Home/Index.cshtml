@@ -1,7 +1,25 @@
 ﻿@{
     ViewBag.Title = "Home Page";
 }
-
+<div class="modal fade" id="saveModal" tabindex="-1" role="dialog" aria-labelledby="saveModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="titleModalLabel">モーダルのタイトル</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="閉じる">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>モーダルのコンテンツ文。</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>
+                <button type="button" data-bind="click:saveAnswers" class="btn btn-primary">変更を保存</button>
+            </div><!-- /.modal-footer -->
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 <div class="jumbotron">
     <h1>汎用アンケート</h1>
 </div>
@@ -10,6 +28,9 @@
         <div data-bind="template: kind" class="form-group"></div>
     </div>
 </form>
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#saveModal">入力値を保存</button>
+@Scripts.Render("~/bundles/knockout")
+@section scripts{
 <script type="text/template" id="tab">
     <ul data-bind="foreach:items" class="nav nav-tabs">
         <li class="nav-item"><a class="nav-link" data-toggle="tab" data-bind="text: text, attr:{href:'#'+code}"></a></li>
@@ -40,7 +61,7 @@
 </script>
 <script type="text/template" id="select">
     <section class="p-2">
-        <p data-bind="text: text"class="font-weight-bold"></p>
+        <p data-bind="text: text" class="font-weight-bold"></p>
         <select data-bind="value: data, options:options, optionsText:'text', optionsValue:'code', attr:{name:code, size:rows}" class="custom-control custom-select ml-sm-2 ml-md-3"></select>
     </section>
 </script>
@@ -52,7 +73,7 @@
 </script>
 <script type="text/template" id="textarea">
     <section class="form-group row p-3">
-        <label  data-bind="text: text" class="font-weight-bold col-md-3 col-lg-2"></label>
+        <label data-bind="text: text" class="font-weight-bold col-md-3 col-lg-2"></label>
         <textarea data-bind="value: data, attr:{name:code, rows:rows, cols:cols}" class="form-control col-12 col-sm-11 col-md-8 mx-auto"></textarea>
     </section>
 </script>
@@ -65,13 +86,11 @@
     </section>
 </script>
 <script type="text/template" id="option">
-        <input type="radio" data-bind="checked: $parent.data, attr:{id: code, name: $parent.code, value: code}" class="custom-control-input">
-        <label data-bind="text: text, attr: {for: code}" class="custom-control-label"></label>
+    <input type="radio" data-bind="checked: $parent.data, attr:{id: code, name: $parent.code, value: code}" class="custom-control-input">
+    <label data-bind="text: text, attr: {for: code}" class="custom-control-label"></label>
 </script>
 <script type="text/template" id="invisible">
 </script>
-@Scripts.Render("~/bundles/knockout")
-@section scripts{
     <script type="text/javascript">
         var StandardOptions = {
             "YesNo": [{ code: "A_yes", kind: "option", text: "はい" }, { code: "A_no", kind: "option", text: "いいえ" }],
@@ -80,6 +99,9 @@
         var ViewModel = function () {
             var self = this;
             this.questions = ko.observableArray([]);
+            this.saveAnswers = function (data, e) {
+                var d = data;
+            };
         };
         function makeNodes(nodes, parent) {
             return nodes.map(function (v) {
