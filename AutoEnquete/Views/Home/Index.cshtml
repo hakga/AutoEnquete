@@ -80,7 +80,7 @@
     </section>
 </script>
 <script type="text/template" id="block">
-    <section data-bind="visible:values.includes(data())" class="p-2 mt-2 border">
+    <section data-bind="visible:selected" class="p-2 mt-2 border">
         <p data-bind="text: text" class="mb-1"></p>
         <!-- ko foreach: items -->
         <div data-bind="template: kind"></div>
@@ -114,7 +114,7 @@
                 node.kind = v.kind;
                 node.text = v.text;
                 node.items = [];
-                node.depend = v.depend;
+                node.selected = v.selected;
                 node.required = v.required;
                 switch (v.kind) {
                     case "tab":
@@ -169,17 +169,28 @@
         }
         function remakeNodes(nodes, rootNnodes) {
             nodes.forEach(function (v, i) {
-                if (v.depend) {
-                    var c = Object.keys(v.depend);
-                    if (c[0]) {
-                        var node = findNode(rootNnodes, c[0]);
-                        if (node != null) {
-                            v.values = v.depend[c[0]];
-                            v.data = node.data;
-                        } else console.log("depend参照不良");
-                    } else console.log("depend参照不正");
-                }
-                if (v && v.required != null) {
+                if (v.selected != null) {
+                    if (v.selected === true || v.selected === false) {
+                    } else {
+                        var c = Object.keys(v.selected);
+                        if (c[0]) {
+                            var node = findNode(rootNnodes, c[0]);
+                            if (node != null) {
+                                v.selectedValues = v.selected[c[0]];
+                                v.selected = ko.computed(function () {
+                                    return v.selectedValues.includes(node.data());
+                                });
+                            } else {
+                                v.selected = true;
+                                console.log("selected参照不良");
+                            }
+                        } else {
+                            v.selected = true;
+                            console.log("selected参照不正");
+                        }
+                    }
+                } else v.selected = true;
+                if (v.required != null) {
                     if (v.required === true || v.required === false) {
                     } else {
                         var c = Object.keys(v.required);
