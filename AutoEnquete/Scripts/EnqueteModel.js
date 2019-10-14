@@ -1,8 +1,4 @@
-﻿var StandardOptions = {
-        "YesNo": [{ code: "A_yes", kind: "option", text: "はい" }, { code: "A_no", kind: "option", text: "いいえ" }],
-        "Numeric3": [{ code: "1", kind: "option", text: "1" }, { code: "2", kind: "option", text: "2" }, { code: "3", kind: "option", text: "3" }]
-    };
-var ViewModel = function ( json) {
+﻿var ViewModel = function (json) {
     var self = this;
     this.questions = ko.observableArray([]);
     this.saveAnswers = function (data, e) {
@@ -163,7 +159,7 @@ window.addEventListener('load', function () {
             if (form.checkValidity() === false) {
                 event.preventDefault();
                 event.stopPropagation();
-            }
+             }
             form.classList.add('was-validated');
         }, false);
     });

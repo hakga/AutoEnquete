@@ -23,13 +23,14 @@
 <div class="jumbotron">
     <h1>汎用アンケート</h1>
 </div>
-<form id="Questions" class="needs-validation p-3" novalidate>
+<form id="Questions" method="post" class="needs-validation p-3" novalidate>
+    <input type="hidden" name="QuestNo" value="@ViewBag.QuestNo" />
     <div data-bind="foreach: questions">
         <div data-bind="template: kind" class="form-group"></div>
     </div>
+    <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#saveModal">入力値を保存</button>
     <button type="submit" class="btn btn-primary">フォームを送信</button>
 </form>
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#saveModal">入力値を保存</button>
 @Scripts.Render("~/bundles/knockout")
 @section scripts{
 <script type="text/template" id="tab">
@@ -95,6 +96,10 @@
 </script>
 <script type="text/javascript" src='@Url.Content("~/Scripts/EnqueteModel.js")'></script>
 <script type="text/javascript">
+    var StandardOptions = {
+        "YesNo": [{ code: "A_yes", kind: "option", text: "はい" }, { code: "A_no", kind: "option", text: "いいえ" }],
+        "Numeric3": [{ code: "1", kind: "option", text: "1" }, { code: "2", kind: "option", text: "2" }, { code: "3", kind: "option", text: "3" }]
+    };
     document.addEventListener("DOMContentLoaded", function () {
         var model = new ViewModel('@Url.Content("~/Questions.json")');
         ko.applyBindings(model, document.body);
