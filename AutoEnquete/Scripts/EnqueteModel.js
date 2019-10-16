@@ -4,7 +4,6 @@
     this.saveAnswers = function (data, e) {
         var saveData = selectMany(data.questions());
         localStorage.setItem('AutoEnquete', JSON.stringify(saveData));
-        $('#saveModal').modal('toggle');
     };
     $.getJSON(json).done(function (data) {
         var rootNodes = makeNodes(data, null);
@@ -159,7 +158,8 @@ window.addEventListener('load', function () {
             if (form.checkValidity() === false) {
                 event.preventDefault();
                 event.stopPropagation();
-             }
+            }
+            $('#postModal').modal('toggle');
             form.classList.add('was-validated');
         }, false);
     });
