@@ -50,11 +50,22 @@
         <!-- /ko -->
     </div>
 </script>
+<script type="text/template" id="checkbox">
+    <section class="p-2">
+        <p data-bind="text: text" class="font-weight-bold mb-0 mb-sm-1"></p>
+        <!-- ko foreach: items.filter( function( i) {return i.kind == 'option'}) -->
+        <div data-bind="template: 'option-check'" class="custom-control custom-checkbox"></div>
+        <!-- /ko -->
+        <!-- ko foreach: items.filter( function( i) {return i.kind != 'option'}) -->
+        <div data-bind="template: kind"></div>
+        <!-- /ko -->
+    </section>
+</script>
 <script type="text/template" id="radio">
     <section class="p-2">
         <p data-bind="text: text" class="font-weight-bold mb-0 mb-sm-1"></p>
         <!-- ko foreach: items.filter( function( i) {return i.kind == 'option'}) -->
-        <div data-bind="template: kind" class="custom-control custom-radio custom-control-inline"></div>
+        <div data-bind="template: 'option-radio'" class="custom-control custom-radio custom-control-inline"></div>
         <!-- /ko -->
         <!-- ko foreach: items.filter( function( i) {return i.kind != 'option'}) -->
         <div data-bind="template: kind"></div>
@@ -88,7 +99,11 @@
         <!-- /ko -->
     </section>
 </script>
-<script type="text/template" id="option">
+<script type="text/template" id="option-check">
+    <input type="checkbox" data-bind="checked: $parent.data, attr:{id: code, name: code, value: code}" class="custom-control-input">
+    <label data-bind="text: text, attr: {for: code}" class="custom-control-label"></label>
+</script>
+<script type="text/template" id="option-radio">
     <input type="radio" data-bind="checked: $parent.data, attr:{id: code, name: $parent.code, value: code}" class="custom-control-input">
     <label data-bind="text: text, attr: {for: code}" class="custom-control-label"></label>
 </script>

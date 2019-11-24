@@ -38,6 +38,10 @@ function makeNodes(nodes, parent) {
             case "pane":
                 node.items = makeNodes(v.items, node);
                 break;
+            case "checkbox":
+                node.data = ko.observableArray();
+                node.items = makeNodes(v.items, node);
+                break;
             case "radio":
                 node.data = ko.observable();
                 if (v.items.StandardOptions) {
